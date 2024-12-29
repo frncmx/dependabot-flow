@@ -66,7 +66,7 @@ func TestRepositoryFlag(t *testing.T) {
 				}
 			} else {
 				assert.Equal(t, tt.wantOwner, got.Owner(), "owner")
-				assert.Equal(t, tt.wantRepo, got.Repo(), "repo")
+				assert.Equal(t, tt.wantRepo, got.Name(), "repo")
 			}
 		})
 	}

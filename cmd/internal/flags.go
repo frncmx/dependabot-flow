@@ -18,13 +18,13 @@ func (f *RepositoryFlag) RegisterTo(flags *pflag.FlagSet) {
 }
 
 func (f *RepositoryFlag) FlagName() string {
-	return "repository"
+	return "repo"
 }
 
 func (f *RepositoryFlag) Validate() error {
 	parts := strings.Split(f.value, "/")
 	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
-		return fmt.Errorf("flag %v: %q does not follow {owner}/{repo} format", f.FlagName(), f.value)
+		return fmt.Errorf("flag %q: %q does not follow {owner}/{repo} format", f.FlagName(), f.value)
 	}
 	return nil
 }
@@ -33,7 +33,7 @@ func (f *RepositoryFlag) Owner() string {
 	return strings.Split(f.value, "/")[0]
 }
 
-func (f *RepositoryFlag) Repo() string {
+func (f *RepositoryFlag) Name() string {
 	return strings.Split(f.value, "/")[1]
 }
 
@@ -52,7 +52,7 @@ func (f *ReviewersFlag) FlagName() string {
 
 func (f *ReviewersFlag) Validate() error {
 	if len(f.value) < 1 {
-		return fmt.Errorf("flag %v: cannot be empty", f.FlagName())
+		return fmt.Errorf("flag %q: cannot be empty", f.FlagName())
 	}
 	return nil
 }
@@ -62,5 +62,29 @@ func (f *ReviewersFlag) PickRandomReviewer() string {
 }
 
 func (f *ReviewersFlag) Reviewers() []string {
+	return f.value
+}
+
+type PRFlag struct {
+	value int
+}
+
+func (f *PRFlag) RegisterTo(flags *pflag.FlagSet) {
+	const usage = "the ID of target PR"
+	flags.IntVar(&f.value, f.FlagName(), 0, usage)
+}
+
+func (f *PRFlag) FlagName() string {
+	return "pr"
+}
+
+func (f *PRFlag) Validate() error {
+	if f.value == 0 {
+		return fmt.Errorf("flag %q: must be set to a non-zero number", f.FlagName())
+	}
+	return nil
+}
+
+func (f *PRFlag) ID() int {
 	return f.value
 }
