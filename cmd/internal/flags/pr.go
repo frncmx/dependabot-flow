@@ -12,13 +12,13 @@ type PR struct {
 	value int
 }
 
+func (f *PR) FlagName() string {
+	return "pr"
+}
+
 func (f *PR) RegisterTo(flags *pflag.FlagSet) {
 	const usage = "the ID of target PR"
 	flags.IntVar(&f.value, f.FlagName(), 0, usage)
-}
-
-func (f *PR) FlagName() string {
-	return "pr"
 }
 
 func (f *PR) Validate() error {

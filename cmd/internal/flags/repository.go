@@ -13,13 +13,13 @@ type Repository struct {
 	value string
 }
 
+func (f *Repository) FlagName() string {
+	return "repo"
+}
+
 func (f *Repository) RegisterTo(flags *pflag.FlagSet) {
 	const usage = "target repository in {owner}/{repo} format"
 	flags.StringVar(&f.value, f.FlagName(), "", usage)
-}
-
-func (f *Repository) FlagName() string {
-	return "repo"
 }
 
 func (f *Repository) Validate() error {

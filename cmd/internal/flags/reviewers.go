@@ -13,13 +13,13 @@ type Reviewers struct {
 	value []string
 }
 
+func (f *Reviewers) FlagName() string {
+	return "reviewers"
+}
+
 func (f *Reviewers) RegisterTo(flags *pflag.FlagSet) {
 	const usage = "list of reviewers to select from (groups not supported)"
 	flags.StringSliceVar(&f.value, f.FlagName(), nil, usage)
-}
-
-func (f *Reviewers) FlagName() string {
-	return "reviewers"
 }
 
 func (f *Reviewers) Validate() error {
