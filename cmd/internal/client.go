@@ -40,3 +40,8 @@ func (c Client) RequestReview(ctx context.Context, id int, user string) error {
 	_, _, err := c.gh.PullRequests.RequestReviewers(ctx, c.owner, c.repo, id, request)
 	return err
 }
+
+func (c Client) Label(ctx context.Context, pr int, label string) error {
+	_, _, err := c.gh.Issues.AddLabelsToIssue(ctx, c.owner, c.repo, pr, []string{label})
+	return err
+}

@@ -14,11 +14,12 @@ const (
 
 type permission string
 
-func NewTestCredentials(client Client, targetPR int, reviewer string) *TestCredentials {
+func NewTestCredentials(client Client, targetPR int, reviewer, label string) *TestCredentials {
 	return &TestCredentials{
 		client:   client,
 		pr:       targetPR,
 		reviewer: reviewer,
+		label:    label,
 		output:   os.Stdout,
 		failed:   false,
 	}
@@ -28,6 +29,7 @@ type TestCredentials struct {
 	client   Client
 	pr       int
 	reviewer string
+	label    string
 	output   io.Writer
 	failed   bool
 }
@@ -36,6 +38,7 @@ func (t *TestCredentials) Run(ctx context.Context) error {
 	t.comment(ctx, repoPRWrite)
 	t.requestReview(ctx, repoPRWrite)
 	t.approve(ctx, repoPRWrite)
+	t.applyLabel(ctx, repoPRWrite)
 
 	if t.failed {
 		return fmt.Errorf("there were some errors, credentials might not be set up correctly")
@@ -46,7 +49,7 @@ func (t *TestCredentials) Run(ctx context.Context) error {
 
 func (t *TestCredentials) comment(ctx context.Context, permissions ...permission) {
 	t.operation("commenting", permissions...)
-	err := t.client.CommentIssue(ctx, t.pr, "test credentials "+t.timestamp())
+	err := t.client.CommentIssue(ctx, t.pr, "test commenting "+t.timestamp())
 	t.finalize(err)
 }
 
@@ -80,5 +83,11 @@ func (t *TestCredentials) requestReview(ctx context.Context, permissions ...perm
 func (t *TestCredentials) approve(ctx context.Context, permissions ...permission) {
 	t.operation("approval", permissions...)
 	err := t.client.Approve(ctx, t.pr, "test approval "+t.timestamp())
+	t.finalize(err)
+}
+
+func (t *TestCredentials) applyLabel(ctx context.Context, permissions ...permission) {
+	t.operation("labeling", permissions...)
+	err := t.client.Label(ctx, t.pr, t.label)
 	t.finalize(err)
 }
