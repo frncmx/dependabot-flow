@@ -65,6 +65,7 @@ func (t *TestCredentials) finalize(err error) {
 	if err != nil {
 		t.printf("failed:\n%v\n", err)
 		t.failed = true
+		return
 	}
 	t.printf("ok\n")
 }
