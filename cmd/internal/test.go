@@ -35,6 +35,7 @@ type TestCredentials struct {
 func (t *TestCredentials) Run(ctx context.Context) error {
 	t.comment(ctx, repoPRWrite)
 	t.requestReview(ctx, repoPRWrite)
+	t.approve(ctx, repoPRWrite)
 
 	if t.failed {
 		return fmt.Errorf("there were some errors, credentials might not be set up correctly")
@@ -73,5 +74,11 @@ func (t *TestCredentials) finalize(err error) {
 func (t *TestCredentials) requestReview(ctx context.Context, permissions ...permission) {
 	t.operation("review request", permissions...)
 	err := t.client.RequestReview(ctx, t.pr, t.reviewer)
+	t.finalize(err)
+}
+
+func (t *TestCredentials) approve(ctx context.Context, permissions ...permission) {
+	t.operation("approval", permissions...)
+	err := t.client.Approve(ctx, t.pr, "test approval "+t.timestamp())
 	t.finalize(err)
 }

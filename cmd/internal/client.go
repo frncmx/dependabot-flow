@@ -19,15 +19,24 @@ type Client struct {
 	owner, repo string
 }
 
+func (c Client) Approve(ctx context.Context, id int, comment string) error {
+	review := &github.PullRequestReviewRequest{
+		Event: github.Ptr("APPROVE"),
+		Body:  &comment,
+	}
+	_, _, err := c.gh.PullRequests.CreateReview(ctx, c.owner, c.repo, id, review)
+	return err
+}
+
 func (c Client) CommentIssue(ctx context.Context, id int, comment string) error {
 	// Use Issues API as PR API requires commit ID or Reply-to.
-	ic := &github.IssueComment{Body: &comment}
-	_, _, err := c.gh.Issues.CreateComment(ctx, c.owner, c.repo, id, ic)
+	issueComment := &github.IssueComment{Body: &comment}
+	_, _, err := c.gh.Issues.CreateComment(ctx, c.owner, c.repo, id, issueComment)
 	return err
 }
 
 func (c Client) RequestReview(ctx context.Context, id int, user string) error {
-	reviewersRequest := github.ReviewersRequest{Reviewers: []string{user}}
-	_, _, err := c.gh.PullRequests.RequestReviewers(ctx, c.owner, c.repo, id, reviewersRequest)
+	request := github.ReviewersRequest{Reviewers: []string{user}}
+	_, _, err := c.gh.PullRequests.RequestReviewers(ctx, c.owner, c.repo, id, request)
 	return err
 }
