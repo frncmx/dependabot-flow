@@ -8,7 +8,7 @@ import (
 	"github.com/frncmx/dependabot-flow/cmd/internal/flags"
 )
 
-var _ Interface[internal.TestCredentials] = new(TestCredentials)
+var _ Interface[*internal.TestCredentials] = new(TestCredentials)
 
 type TestCredentials struct {
 	client    Client
@@ -30,6 +30,10 @@ func (t *TestCredentials) Validate() error {
 	return err
 }
 
-func (t *TestCredentials) Build() internal.TestCredentials {
-	return internal.NewTestCredentials(t.client.Build(), t.pr.ID())
+func (t *TestCredentials) Build() *internal.TestCredentials {
+	return internal.NewTestCredentials(
+		t.client.Build(),
+		t.pr.ID(),
+		t.reviewers.PickRandomReviewer(),
+	)
 }

@@ -19,12 +19,15 @@ type Client struct {
 	owner, repo string
 }
 
-func (c Client) CommentIssue(ctx context.Context, id int, comment string) (int64, error) {
+func (c Client) CommentIssue(ctx context.Context, id int, comment string) error {
 	// Use Issues API as PR API requires commit ID or Reply-to.
 	ic := &github.IssueComment{Body: &comment}
-	response, _, err := c.gh.Issues.CreateComment(ctx, c.owner, c.repo, id, ic)
-	if err != nil {
-		return 0, err
-	}
-	return response.GetID(), nil
+	_, _, err := c.gh.Issues.CreateComment(ctx, c.owner, c.repo, id, ic)
+	return err
+}
+
+func (c Client) RequestReview(ctx context.Context, id int, user string) error {
+	reviewersRequest := github.ReviewersRequest{Reviewers: []string{user}}
+	_, _, err := c.gh.PullRequests.RequestReviewers(ctx, c.owner, c.repo, id, reviewersRequest)
+	return err
 }
