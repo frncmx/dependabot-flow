@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	repoPRRead  permission = "repo:pr:read"
 	repoPRWrite permission = "repo:pr:write"
 )
 
@@ -35,6 +36,7 @@ type TestCredentials struct {
 }
 
 func (t *TestCredentials) Run(ctx context.Context) error {
+	t.getPR(ctx, repoPRRead)
 	t.comment(ctx, repoPRWrite)
 	t.requestReview(ctx, repoPRWrite)
 	t.approve(ctx, repoPRWrite)
@@ -47,9 +49,15 @@ func (t *TestCredentials) Run(ctx context.Context) error {
 	return nil
 }
 
+func (t *TestCredentials) getPR(ctx context.Context, permissions ...permission) {
+	t.operation("get PR", permissions...)
+	_, err := t.client.GetPR(ctx, t.pr)
+	t.finalize(err)
+}
+
 func (t *TestCredentials) comment(ctx context.Context, permissions ...permission) {
 	t.operation("commenting", permissions...)
-	err := t.client.CommentIssue(ctx, t.pr, "test commenting "+t.timestamp())
+	err := t.client.Comment(ctx, t.pr, "test commenting "+t.timestamp())
 	t.finalize(err)
 }
 
@@ -82,7 +90,7 @@ func (t *TestCredentials) requestReview(ctx context.Context, permissions ...perm
 
 func (t *TestCredentials) approve(ctx context.Context, permissions ...permission) {
 	t.operation("approval", permissions...)
-	err := t.client.Approve(ctx, t.pr, "test approval "+t.timestamp())
+	err := t.client.ApprovePR(ctx, t.pr, "test approval "+t.timestamp())
 	t.finalize(err)
 }
 
