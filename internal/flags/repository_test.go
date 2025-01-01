@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/frncmx/dependabot-flow/cmd/internal/flags"
+	flags2 "github.com/frncmx/dependabot-flow/internal/flags"
 )
 
 func TestRepositoryFlag(t *testing.T) {
@@ -57,7 +57,7 @@ func TestRepositoryFlag(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var got flags.Repository
+			var got flags2.Repository
 			initializeFlag(t, &got, tt.in)
 			err := got.Validate()
 			if err != nil {
@@ -72,7 +72,7 @@ func TestRepositoryFlag(t *testing.T) {
 	}
 }
 
-func initializeFlag[T flags.Interface](t *testing.T, flag T, arg string) {
+func initializeFlag[T flags2.Interface](t *testing.T, flag T, arg string) {
 	t.Helper()
 	flagSet := pflag.NewFlagSet("", pflag.ContinueOnError)
 	flag.RegisterTo(flagSet)

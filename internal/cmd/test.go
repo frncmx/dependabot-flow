@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/frncmx/dependabot-flow/cmd/internal/builders"
+	"github.com/frncmx/dependabot-flow/internal/builders"
 )
 
 var (

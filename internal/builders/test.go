@@ -4,17 +4,17 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"github.com/frncmx/dependabot-flow/cmd/internal"
-	"github.com/frncmx/dependabot-flow/cmd/internal/flags"
+	"github.com/frncmx/dependabot-flow/internal"
+	flags2 "github.com/frncmx/dependabot-flow/internal/flags"
 )
 
 var _ Interface[*internal.TestCredentials] = new(TestCredentials)
 
 type TestCredentials struct {
 	client    Client
-	reviewers flags.Reviewers
-	pr        flags.PR
-	label     flags.Label
+	reviewers flags2.Reviewers
+	pr        flags2.PR
+	label     flags2.Label
 }
 
 func (t *TestCredentials) Init(flags *pflag.FlagSet) {

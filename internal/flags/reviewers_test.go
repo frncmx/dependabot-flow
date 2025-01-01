@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/frncmx/dependabot-flow/cmd/internal/flags"
+	"github.com/frncmx/dependabot-flow/internal/flags"
 )
 
 func TestReviewersFlag(t *testing.T) {
