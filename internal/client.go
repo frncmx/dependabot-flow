@@ -5,12 +5,13 @@ import (
 
 	"github.com/google/go-github/v68/github"
 
+	"github.com/frncmx/dependabot-flow/internal/config"
 	"github.com/frncmx/dependabot-flow/internal/graphql"
 )
 
-func NewClient(token, owner, repo string) Client {
+func NewClient(token config.Secret[string], owner, repo string) Client {
 	return Client{
-		http:    github.NewClient(nil).WithAuthToken(token),
+		http:    github.NewClient(nil).WithAuthToken(token.Value()),
 		graphql: graphql.NewClient(token),
 		owner:   owner,
 		repo:    repo,

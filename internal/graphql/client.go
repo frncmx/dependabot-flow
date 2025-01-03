@@ -5,11 +5,13 @@ import (
 
 	"github.com/cli/go-gh/v2/pkg/api"
 	graphql "github.com/cli/shurcooL-graphql"
+
+	"github.com/frncmx/dependabot-flow/internal/config"
 )
 
-func NewClient(token string) Client {
+func NewClient(token config.Secret[string]) Client {
 	client, err := api.NewGraphQLClient(api.ClientOptions{
-		AuthToken: token,
+		AuthToken: token.Value(),
 	})
 	if err != nil {
 		panic("new graphql client: " + err.Error())
