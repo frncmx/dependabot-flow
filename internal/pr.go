@@ -1,7 +1,6 @@
 package internal
 
 type PullRequest struct {
-	ID        int
 	Title     string
 	Body      string
 	Reviewers []string
