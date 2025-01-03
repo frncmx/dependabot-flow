@@ -17,7 +17,7 @@ func (f *PR) FlagName() string {
 }
 
 func (f *PR) RegisterTo(flags *pflag.FlagSet) {
-	const usage = "the ID of target PR"
+	const usage = "the number of target PR"
 	flags.IntVar(&f.value, f.FlagName(), 0, usage)
 }
 
@@ -28,6 +28,6 @@ func (f *PR) Validate() error {
 	return nil
 }
 
-func (f *PR) ID() int {
+func (f *PR) Number() int {
 	return f.value
 }

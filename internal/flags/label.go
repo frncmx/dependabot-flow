@@ -27,6 +27,6 @@ func (l *Label) Validate() error {
 	return nil
 }
 
-func (l *Label) Value() string {
+func (l *Label) Name() string {
 	return l.value
 }

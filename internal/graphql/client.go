@@ -48,7 +48,7 @@ type PR struct {
 
 func (c Client) EnableAutoMerge(ctx context.Context, id string) error {
 	var mutation struct {
-		EnablePullRequestAutoMerge struct {
+		AutoMerge struct {
 			PullRequest struct {
 				ID string
 			}
@@ -62,7 +62,7 @@ func (c Client) EnableAutoMerge(ctx context.Context, id string) error {
 
 func (c Client) DisableAutoMerge(ctx context.Context, id string) error {
 	var mutation struct {
-		EnablePullRequestAutoMerge struct {
+		AutoMerge struct {
 			PullRequest struct {
 				ID string
 			}

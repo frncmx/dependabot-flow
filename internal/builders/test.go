@@ -36,8 +36,8 @@ func (t *TestCredentials) Validate() error {
 func (t *TestCredentials) Build() *internal.TestCredentials {
 	return internal.NewTestCredentials(
 		t.client.Build(),
-		t.pr.ID(),
+		t.pr.Number(),
 		t.reviewers.PickRandomReviewer(),
-		t.label.Value(),
+		t.label.Name(),
 	)
 }
