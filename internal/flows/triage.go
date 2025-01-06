@@ -1,4 +1,4 @@
-package internal
+package flows
 
 import (
 	"context"
@@ -6,20 +6,24 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	"github.com/frncmx/dependabot-flow/internal"
 )
 
-func NewTriage(client Client, number int, reviewer string) *Triage {
+var _ Interface = new(Triage)
+
+func NewTriage(client internal.Client, number int, reviewer string) *Triage {
 	return &Triage{
 		client:   client,
-		pr:       PullRequest{Number: number},
+		pr:       internal.PullRequest{Number: number},
 		reviewer: reviewer,
 		output:   os.Stdout,
 	}
 }
 
 type Triage struct {
-	client   Client
-	pr       PullRequest
+	client   internal.Client
+	pr       internal.PullRequest
 	reviewer string
 	output   io.Writer
 	err      error
@@ -90,7 +94,7 @@ func (t *Triage) comment(ctx context.Context) {
 	if t.errored() {
 		return
 	}
-	comment := CommentWithQuote{
+	comment := internal.CommentWithQuote{
 		Message: fmt.Sprintf(
 			"@%v please, look into this!\n\n:x: Suspicious PR body! Regexp pattern:\n\n`%v`",
 			t.reviewer,

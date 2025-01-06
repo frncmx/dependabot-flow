@@ -4,11 +4,11 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"github.com/frncmx/dependabot-flow/internal"
 	"github.com/frncmx/dependabot-flow/internal/flags"
+	"github.com/frncmx/dependabot-flow/internal/flows"
 )
 
-var _ Interface[*internal.Triage] = new(Triage)
+var _ Interface[*flows.Triage] = new(Triage)
 
 type Triage struct {
 	client    Client
@@ -30,8 +30,8 @@ func (t *Triage) Validate() error {
 	return err
 }
 
-func (t *Triage) Build() *internal.Triage {
-	return internal.NewTriage(
+func (t *Triage) Build() *flows.Triage {
+	return flows.NewTriage(
 		t.client.Build(),
 		t.pr.Number(),
 		t.reviewers.PickRandomReviewer(),

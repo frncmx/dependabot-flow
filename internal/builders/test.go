@@ -4,11 +4,11 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"github.com/frncmx/dependabot-flow/internal"
 	"github.com/frncmx/dependabot-flow/internal/flags"
+	"github.com/frncmx/dependabot-flow/internal/flows"
 )
 
-var _ Interface[*internal.TestCredentials] = new(TestCredentials)
+var _ Interface[*flows.TestCredentials] = new(TestCredentials)
 
 type TestCredentials struct {
 	client    Client
@@ -33,8 +33,8 @@ func (t *TestCredentials) Validate() error {
 	return err
 }
 
-func (t *TestCredentials) Build() *internal.TestCredentials {
-	return internal.NewTestCredentials(
+func (t *TestCredentials) Build() *flows.TestCredentials {
+	return flows.NewTestCredentials(
 		t.client.Build(),
 		t.pr.Number(),
 		t.reviewers.PickRandomReviewer(),

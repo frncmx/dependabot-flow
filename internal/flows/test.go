@@ -1,4 +1,4 @@
-package internal
+package flows
 
 import (
 	"context"
@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"time"
+
+	"github.com/frncmx/dependabot-flow/internal"
 )
 
 const (
@@ -16,7 +18,9 @@ const (
 
 type permission string
 
-func NewTestCredentials(client Client, targetPR int, reviewer, label string) *TestCredentials {
+var _ Interface = new(TestCredentials)
+
+func NewTestCredentials(client internal.Client, targetPR int, reviewer, label string) *TestCredentials {
 	return &TestCredentials{
 		client:   client,
 		pr:       targetPR,
@@ -28,7 +32,7 @@ func NewTestCredentials(client Client, targetPR int, reviewer, label string) *Te
 }
 
 type TestCredentials struct {
-	client   Client
+	client   internal.Client
 	pr       int
 	reviewer string
 	label    string
