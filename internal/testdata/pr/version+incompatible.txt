@@ -1,0 +1,2 @@
+Bumps [github.com/docker/docker](https://github.com/docker/docker) from 27.4.0+incompatible to 27.4.1+incompatible.
+(The package does not follow semantic import versioning.)

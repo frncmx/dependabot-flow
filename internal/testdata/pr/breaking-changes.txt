@@ -1,0 +1,12 @@
+breaking
+Breaking
+<h3>BREAKING CHANGES</h3>
+breaks
+<p>Some explanation..</p>
+<ul>
+<li><strong><em>Major:</em></strong> some more explanation </li>
+majority
+</ul>
+27.4.1+incompatible breaking
+
+Incompatible

@@ -65,8 +65,9 @@ func (c Client) GetPR(ctx context.Context, number int) (PullRequest, error) {
 		return PullRequest{}, err
 	}
 	result := PullRequest{
-		Title: response.GetTitle(),
-		Body:  response.GetBody(),
+		Number: response.GetNumber(),
+		URL:    response.GetHTMLURL(),
+		Body:   response.GetBody(),
 	}
 	for _, reviewer := range response.RequestedReviewers {
 		result.Reviewers = append(result.Reviewers, reviewer.GetLogin())

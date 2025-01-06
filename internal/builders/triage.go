@@ -8,36 +8,32 @@ import (
 	"github.com/frncmx/dependabot-flow/internal/flags"
 )
 
-var _ Interface[*internal.TestCredentials] = new(TestCredentials)
+var _ Interface[*internal.Triage] = new(Triage)
 
-type TestCredentials struct {
+type Triage struct {
 	client    Client
 	reviewers flags.Reviewers
 	pr        flags.PR
-	label     flags.Label
 }
 
-func (t *TestCredentials) Init(flags *pflag.FlagSet) {
+func (t *Triage) Init(flags *pflag.FlagSet) {
 	t.client.Init(flags)
 	t.reviewers.RegisterTo(flags)
 	t.pr.RegisterTo(flags)
-	t.label.RegisterTo(flags)
 }
 
-func (t *TestCredentials) Validate() error {
+func (t *Triage) Validate() error {
 	var err error
 	multierr.AppendFunc(&err, t.client.Validate)
 	multierr.AppendFunc(&err, t.reviewers.Validate)
 	multierr.AppendFunc(&err, t.pr.Validate)
-	multierr.AppendFunc(&err, t.label.Validate)
 	return err
 }
 
-func (t *TestCredentials) Build() *internal.TestCredentials {
-	return internal.NewTestCredentials(
+func (t *Triage) Build() *internal.Triage {
+	return internal.NewTriage(
 		t.client.Build(),
 		t.pr.Number(),
 		t.reviewers.PickRandomReviewer(),
-		t.label.Name(),
 	)
 }
