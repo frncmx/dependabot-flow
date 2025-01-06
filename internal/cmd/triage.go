@@ -22,6 +22,7 @@ var triageCmd = &cobra.Command{
 		return triage.Validate()
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
+		cmd.SilenceUsage = true
 		return triage.Build().Run(cmd.Context())
 	},
 }

@@ -65,7 +65,7 @@ func (t *Triage) approve(ctx context.Context) {
 	if t.errored() {
 		return
 	}
-	comment := fmt.Sprintf("LGTM (pattern: `%v`)", t.pr.SuspiciousPattern())
+	comment := fmt.Sprintf("LGTM\n(PR body scan pattern: `%v`)", t.pr.SuspiciousPattern())
 	t.err = t.client.ApprovePR(ctx, t.pr.Number, comment)
 	if !t.errored() {
 		t.printf("approved\n")
